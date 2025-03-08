@@ -2,6 +2,7 @@ const btnPesquisa = document.getElementById('btn_pesquisa');
 // Função para disparar a ação do botão "Procurar"
 function acionarPesquisa() {
     btnPesquisa.click();
+
 }
 
 // Evento de tecla "Enter"
@@ -17,6 +18,13 @@ let selectedCategories = []; // Variável global
 
 // Evento do botão de pesquisa
 document.getElementById("btn_pesquisa").addEventListener("click", function() {
+    if (window.innerWidth <= 767) {
+        setTimeout(function() {
+            const resultado = document.getElementById('resultado');
+            const topPos = resultado.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: topPos, behavior: 'smooth' });
+        }, 500); // 500ms de atraso, ajuste conforme o tempo de carregamento
+    }
     const query = document.getElementById('titulo').value;
     const ano = document.getElementById('ano').value;
     

@@ -6,7 +6,7 @@
     --imdb-yellow: #f5c518ff;
     --imdb-dark-yellow: #dba506ff;
     --imdb-black: #000000ff;
-    --imdb-dark-gray: #1a1a1aff;
+    --imdb-dark-gray: rgba(26, 26, 26, 0.867);
     --imdb-white: #ffffffff;
 }
 
@@ -14,7 +14,7 @@
 body {
     font-family: 'Source Sans 3', sans-serif;
     background: linear-gradient(135deg, var(--imdb-dark-gray) 0%, var(--imdb-black) 100%);
-    color: var(--imdb-white); /* Contraste com fundo escuro */
+    color: var(--imdb-white);
     margin: 0;
     padding: 0;
     line-height: 1.6;
@@ -26,13 +26,15 @@ body {
 /* Container Principal */
 .container {
     flex: 1 0 auto;
+    margin-top: 2rem; /* Espaçamento entre header e body */
+    margin-bottom: 2rem; /* Espaçamento entre body e footer */
 }
 
 /* Header Styles */
 header {
-    background: var(--imdb-black); /* Fundo preto como no IMDb */
+    background: var(--imdb-black);
     padding: 3rem 0;
-    border-bottom: 1px solid rgba(245, 197, 24, 0.5); /* Usando imdb-yellow com opacidade */
+    border-bottom: 1px solid rgba(245, 197, 24, 0.5);
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -43,14 +45,14 @@ header h1 {
     font-weight: 600;
     letter-spacing: 1px;
     margin-bottom: 0.5rem;
-    color: var(--imdb-yellow); /* Amarelo característico do IMDb */
+    color: var(--imdb-yellow);
 }
 
 header p {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 1.1rem;
     font-weight: 300;
-    color: var(--imdb-dark-gray); /* Cinza escuro para contraste */
+    color: var(--imdb-dark-gray);
 }
 
 /* Input Group Styles */
@@ -70,14 +72,14 @@ header p {
     width: 100%;
     max-width: 320px;
     font-size: 1rem;
-    background: var(--imdb-dark-gray); /* Fundo cinza escuro */
-    color: var(--imdb-white); /* Texto branco */
+    background: var(--imdb-dark-gray);
+    color: var(--imdb-white);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .input-group input:focus {
-    box-shadow: 0 4px 20px rgba(219, 165, 6, 0.2); /* Usando imdb-dark-yellow */
+    box-shadow: 0 4px 20px rgba(219, 165, 6, 0.2);
     outline: none;
     transform: scale(1.02);
 }
@@ -101,7 +103,7 @@ header p {
 }
 
 #limite-resultados:hover {
-    box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2); /* Usando imdb-yellow */
+    box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2);
     transform: translateY(-2px);
 }
 
@@ -113,7 +115,7 @@ header p {
 /* Button Styles */
 .btn {
     background: linear-gradient(90deg, var(--imdb-yellow) 0%, var(--imdb-dark-yellow) 100%);
-    color: var(--imdb-black); /* Contraste com amarelo */
+    color: var(--imdb-black);
     border: none;
     padding: 12px 25px;
     border-radius: 50px;
@@ -161,7 +163,7 @@ header p {
 
 /* Card Styles (Grid Mode) */
 .movie-item {
-    background: var(--imdb-dark-gray); /* Fundo cinza escuro como no IMDb */
+    background: var(--imdb-dark-gray);
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -215,7 +217,7 @@ header p {
     font-weight: 500;
     margin: 12px 0;
     padding: 0 12px;
-    color: var(--imdb-yellow); /* Amarelo para títulos */
+    color: var(--imdb-yellow);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -226,13 +228,13 @@ header p {
     font-size: 0.95rem;
     font-weight: 300;
     padding: 0 12px 12px;
-    color: var(--imdb-white); /* Texto branco */
+    color: var(--imdb-white);
 }
 
 /* Footer Styles */
 .footer {
-    background: var(--imdb-black);
-    color: var(--imdb-yellow); /* Amarelo para texto no rodapé */
+    background: var(--imdb-white);
+    color: var(--imdb-black);
     padding: 0.8rem 0;
     text-align: center;
     font-family: 'Source Sans 3', sans-serif;
@@ -247,6 +249,7 @@ header p {
     margin: 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+   
 }
 
 .footer::before {
@@ -267,31 +270,39 @@ header p {
         font-size: 2.25rem;
     }
 
-    .input-group {
-        flex-direction: column;
+    .d-flex {
+        flex-direction: column; /* Mantém a estrutura base do HTML */
         align-items: center;
         gap: 8px;
         margin-top: 1rem;
     }
 
-    .input-group input#titulo {
+    .d-flex input#titulo {
         margin-top: 1rem;
     }
 
-    .input-group input#titulo,
-    .input-group input#ano {
+    .d-flex input#titulo,
+    .d-flex input#ano {
         padding: 8px 15px;
         font-size: 0.9rem;
         max-width: 280px;
     }
 
-    #limite-resultados {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        max-width: 90px;
+    /* Ajuste específico para #limite-resultados e #btn_pesquisa ficarem lado a lado */
+    #limite-resultados,
+    #btn_pesquisa {
+        display: inline-block; /* Garante que fiquem na mesma linha */
+        width: auto; /* Remove largura máxima para ajuste natural */
     }
 
-    .btn#btn_pesquisa {
+    #limite-resultados {
+        padding: 8px 12px;
+        font-size: 0.9rem; /* Consistente com outros elementos */
+        max-width: 90px;
+        margin-right: 8px; /* Espaço entre o dropdown e o botão */
+    }
+
+    #btn_pesquisa.btn {
         padding: 8px 20px;
         font-size: 0.9rem;
         max-width: 120px;
@@ -309,14 +320,14 @@ header p {
 }
 
 @media (min-width: 768px) {
-    .input-group {
+    .d-flex {
         flex-direction: row;
         align-items: center;
         gap: 15px;
         margin-top: 2rem;
     }
 
-    .input-group input {
+    .d-flex input {
         width: auto;
         flex: 1;
         max-width: none;
@@ -349,7 +360,7 @@ header p {
 #titulo::placeholder,
 #ano::placeholder {
     font-size: 0.6rem;
-    color: var(--imdb-white); /* Contraste com fundo escuro */
+    color: var(--imdb-white);
 }
 
 /* Container das categorias */
@@ -377,7 +388,7 @@ header p {
 
 .category-card:hover {
     background-color: var(--imdb-yellow);
-    color: var(--imdb-black); /* Contraste com amarelo */
+    color: var(--imdb-black);
     transform: scale(1.05);
 }
 
