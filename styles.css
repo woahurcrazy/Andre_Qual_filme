@@ -1,29 +1,38 @@
 /* Importação das fontes diretamente no CSS */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Reenie+Beanie&family=Oswald:wght@200;300;400;500;600;700&display=swap');
 
+/* Definição das variáveis de cores */
+:root {
+    --imdb-yellow: #f5c518ff;
+    --imdb-dark-yellow: #dba506ff;
+    --imdb-black: #000000ff;
+    --imdb-dark-gray: #1a1a1aff;
+    --imdb-white: #ffffffff;
+}
+
 /* General Body Styles */
 body {
     font-family: 'Source Sans 3', sans-serif;
-    background: linear-gradient(135deg, #f0f2f5 0%, #e9ecef 100%);
-    color: #212529;
+    background: linear-gradient(135deg, var(--imdb-dark-gray) 0%, var(--imdb-black) 100%);
+    color: var(--imdb-white); /* Contraste com fundo escuro */
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    min-height: 100vh; /* Garante que o body ocupe pelo menos a altura total da tela */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 /* Container Principal */
 .container {
-    flex: 1 0 auto; /* Cresce para ocupar o espaço disponível, empurrando o footer para baixo */
+    flex: 1 0 auto;
 }
 
 /* Header Styles */
 header {
-    background: #f8f9fa;
+    background: var(--imdb-black); /* Fundo preto como no IMDb */
     padding: 3rem 0;
-    border-bottom: 1px solid rgba(218, 224, 230, 0.5);
+    border-bottom: 1px solid rgba(245, 197, 24, 0.5); /* Usando imdb-yellow com opacidade */
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -34,13 +43,14 @@ header h1 {
     font-weight: 600;
     letter-spacing: 1px;
     margin-bottom: 0.5rem;
+    color: var(--imdb-yellow); /* Amarelo característico do IMDb */
 }
 
 header p {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 1.1rem;
     font-weight: 300;
-    color: #6c757d;
+    color: var(--imdb-dark-gray); /* Cinza escuro para contraste */
 }
 
 /* Input Group Styles */
@@ -60,13 +70,14 @@ header p {
     width: 100%;
     max-width: 320px;
     font-size: 1rem;
-    background: #ffffff;
+    background: var(--imdb-dark-gray); /* Fundo cinza escuro */
+    color: var(--imdb-white); /* Texto branco */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .input-group input:focus {
-    box-shadow: 0 4px 20px rgba(26, 115, 232, 0.2);
+    box-shadow: 0 4px 20px rgba(219, 165, 6, 0.2); /* Usando imdb-dark-yellow */
     outline: none;
     transform: scale(1.02);
 }
@@ -79,8 +90,8 @@ header p {
     padding: 12px 15px;
     border: none;
     border-radius: 50px;
-    background: #ffffff;
-    color: #495057;
+    background: var(--imdb-dark-gray);
+    color: var(--imdb-white);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     cursor: pointer;
     outline: none;
@@ -89,10 +100,20 @@ header p {
     max-width: 100px;
 }
 
+#limite-resultados:hover {
+    box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2); /* Usando imdb-yellow */
+    transform: translateY(-2px);
+}
+
+#limite-resultados:focus {
+    box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2);
+    border: 1px solid var(--imdb-yellow);
+}
+
 /* Button Styles */
 .btn {
-    background: linear-gradient(90deg, #1a73e8 0%, #4285f4 100%);
-    color: #ffffff;
+    background: linear-gradient(90deg, var(--imdb-yellow) 0%, var(--imdb-dark-yellow) 100%);
+    color: var(--imdb-black); /* Contraste com amarelo */
     border: none;
     padding: 12px 25px;
     border-radius: 50px;
@@ -107,24 +128,25 @@ header p {
 }
 
 .btn:hover {
-    background: linear-gradient(90deg, #1557b0 0%, #3267d6 100%);
+    background: linear-gradient(90deg, var(--imdb-dark-yellow) 0%, var(--imdb-yellow) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3);
+    box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
 }
 
 /* Layout Button */
 #btn_layout {
     margin: 2rem auto;
     display: block;
-    background: linear-gradient(90deg, #34c759 0%, #2ecc71 100%);
+    background: var(--imdb-dark-yellow);
     padding: 10px 20px;
     font-size: 0.95rem;
     border-radius: 50px;
     transition: all 0.3s ease;
+    color: var(--imdb-black);
 }
 
 #btn_layout:hover {
-    background: linear-gradient(90deg, #28a745 0%, #27ae60 100%);
+    background: var(--imdb-yellow);
     transform: translateY(-2px);
 }
 
@@ -139,7 +161,7 @@ header p {
 
 /* Card Styles (Grid Mode) */
 .movie-item {
-    background: #ffffff;
+    background: var(--imdb-dark-gray); /* Fundo cinza escuro como no IMDb */
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -193,7 +215,7 @@ header p {
     font-weight: 500;
     margin: 12px 0;
     padding: 0 12px;
-    color: #1a73e8;
+    color: var(--imdb-yellow); /* Amarelo para títulos */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -204,19 +226,19 @@ header p {
     font-size: 0.95rem;
     font-weight: 300;
     padding: 0 12px 12px;
-    color: #495057;
+    color: var(--imdb-white); /* Texto branco */
 }
 
 /* Footer Styles */
 .footer {
-    background: linear-gradient(135deg, #1a73e8 0%, #4285f4 100%);
-    color: #ffffff;
+    background: var(--imdb-black);
+    color: var(--imdb-yellow); /* Amarelo para texto no rodapé */
     padding: 0.8rem 0;
     text-align: center;
     font-family: 'Source Sans 3', sans-serif;
     font-size: 0.9rem;
     font-weight: 200;
-    flex-shrink: 0; /* Impede que o footer encolha */
+    flex-shrink: 0;
     width: 100%;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -235,7 +257,7 @@ header p {
     transform: translateX(-50%);
     width: 50px;
     height: 4px;
-    background: #ffffff;
+    background: var(--imdb-dark-yellow);
     border-radius: 2px;
 }
 
@@ -327,7 +349,7 @@ header p {
 #titulo::placeholder,
 #ano::placeholder {
     font-size: 0.6rem;
-    color: #6c757d;
+    color: var(--imdb-white); /* Contraste com fundo escuro */
 }
 
 /* Container das categorias */
@@ -340,7 +362,7 @@ header p {
 
 /* Estilo dos cards */
 .category-card {
-    background-color: #f8f9fa;
+    background-color: var(--imdb-dark-gray);
     padding: 15px 25px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -350,15 +372,17 @@ header p {
     font-size: 1rem;
     width: 160px;
     text-transform: capitalize;
+    color: var(--imdb-white);
 }
 
 .category-card:hover {
-    background-color: #e9ecef;
+    background-color: var(--imdb-yellow);
+    color: var(--imdb-black); /* Contraste com amarelo */
     transform: scale(1.05);
 }
 
 .category-card.selected {
-    background-color: #12a9369a;
-    color: white;
+    background-color: var(--imdb-dark-yellow);
+    color: var(--imdb-black);
     transform: scale(1.0);
 }
