@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa de Filmes</title>
+    <!-- Link para o Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet"> <!-- Seu CSS personalizado -->
+</head>
+
+<body>
+<!-- Cabeçalho -->
+<header class="bg-light text-dark text-center py-3 mb-12">
+    <h1 class="display-6">Pesquisa de Filmes</h1>
+    <p class="lead">Encontra os teus filmes e séries favoritas!</p>
+</header>
+
+<!-- Container Principal -->
+<div class="container">
+    <!-- Barra de Pesquisa -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8 col-lg-6">
+            <div class="input-group mb-3">
+                <input type="text" id="titulo" class="form-control" placeholder="Procurar por Título...">
+                <input type="text" id="ano" class="form-control" placeholder="Procurar por Ano...">
+                <select id="limite-resultados" class="form-select" style="max-width: 100px;">
+                    <option value="20" selected>20 resultados</option>
+                    <option value="40">40 resultados</option>
+                    <option value="60">60 resultados</option>
+                    <option value="80">80 resultados</option>
+                    <option value="100">100 resultados</option>
+                </select>
+                <button id="btn_pesquisa" class="btn btn-success">Procurar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categorias -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-10 col-lg-8">
+            <div class="categories">
+                <div class="category-card" data-id="28"><span>Ação</span></div>
+                <div class="category-card" data-id="12"><span>Aventura</span></div>
+                <div class="category-card" data-id="16"><span>Animação</span></div>
+                <div class="category-card" data-id="35"><span>Comédia</span></div>
+                <div class="category-card" data-id="80"><span>Crime</span></div>
+                <div class="category-card" data-id="99"><span>Documentário</span></div>
+                <div class="category-card" data-id="18"><span>Drama</span></div>
+                <div class="category-card" data-id="10751"><span>Família</span></div>
+                <div class="category-card" data-id="14"><span>Fantasia</span></div>
+                <div class="category-card" data-id="36"><span>História</span></div>
+                <div class="category-card" data-id="27"><span>Terror</span></div>
+                <div class="category-card" data-id="10402"><span>Música</span></div>
+                <div class="category-card" data-id="9648"><span>Mistério</span></div>
+                <div class="category-card" data-id="10749"><span>Romance</span></div>
+                <div class="category-card" data-id="878"><span>Ficção científica</span></div>
+                <div class="category-card" data-id="10770"><span>Cinema TV</span></div>
+                <div class="category-card" data-id="53"><span>Thriller</span></div>
+                <div class="category-card" data-id="10752"><span>Guerra</span></div>
+                <div class="category-card" data-id="37"><span>Faroeste</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultados da Pesquisa -->
+    <div id="resultado" class="row g-4">
+        <!-- Filmes serão carregados aqui -->
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="logica.js"></script> <!-- Seu arquivo JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
