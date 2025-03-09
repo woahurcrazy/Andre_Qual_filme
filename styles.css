@@ -26,8 +26,8 @@ body {
 /* Container Principal */
 .container {
     flex: 1 0 auto;
-    margin-top: 2rem; /* Espaçamento entre header e body */
-    margin-bottom: 2rem; /* Espaçamento entre body e footer */
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* Header Styles */
@@ -85,7 +85,9 @@ header p {
 }
 
 /* Select Styles */
-#limite-resultados {
+#ordem,
+#limite-resultados,
+#media-type {
     font-family: 'Source Sans 3', sans-serif;
     font-size: 1rem;
     font-weight: 400;
@@ -99,15 +101,19 @@ header p {
     outline: none;
     transition: all 0.3s ease;
     width: 100%;
-    max-width: 100px;
+    max-width: 120px;
 }
 
-#limite-resultados:hover {
+#ordem:hover,
+#limite-resultados:hover,
+#media-type:hover {
     box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2);
     transform: translateY(-2px);
 }
 
-#limite-resultados:focus {
+#ordem:focus,
+#limite-resultados:focus,
+#media-type:focus {
     box-shadow: 0 4px 20px rgba(245, 197, 24, 0.2);
     border: 1px solid var(--imdb-yellow);
 }
@@ -125,14 +131,17 @@ header p {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.3s ease;
-    width: 100%;
-    max-width: 150px;
 }
 
 .btn:hover {
     background: linear-gradient(90deg, var(--imdb-dark-yellow) 0%, var(--imdb-yellow) 100%);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(245, 197, 24, 0.3);
+}
+
+/* Estilo específico para o botão de pesquisa */
+#btn_pesquisa {
+    width: auto; /* Largura natural */
 }
 
 /* Layout Button */
@@ -249,7 +258,6 @@ header p {
     margin: 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-   
 }
 
 .footer::before {
@@ -264,6 +272,50 @@ header p {
     border-radius: 2px;
 }
 
+/* Container das categorias */
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+/* Estilo base para ambas as categorias */
+.category-card, .category-card_serie {
+    background-color: var(--imdb-dark-gray);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    width: 160px;
+    color: var(--imdb-white);
+    display: none; /* Esconder por padrão */
+    text-align: center; /* Garantir alinhamento horizontal do texto */
+}
+
+/* Hover para ambas as categorias */
+.category-card:hover, .category-card_serie:hover {
+    background-color: var(--imdb-yellow);
+    color: var(--imdb-black);
+    transform: scale(1.05);
+}
+
+/* Estado selecionado para ambas as categorias */
+.category-card.selected, .category-card_serie.selected {
+    background-color: var(--imdb-dark-yellow);
+    color: var(--imdb-black);
+    transform: scale(1.0);
+}
+
+/* Classe para mostrar os cartões e centralizar o conteúdo */
+.visible {
+    display: flex;
+    justify-content: center; /* Centralizar horizontalmente */
+    align-items: center; /* Centralizar verticalmente */
+}
+
 /* Responsive Design */
 @media (max-width: 767px) {
     header h1 {
@@ -271,8 +323,8 @@ header p {
     }
 
     .d-flex {
-        flex-direction: column; /* Mantém a estrutura base do HTML */
-        align-items: center;
+        flex-direction: column;
+        align-items: center; /* Centralizar os itens em telas pequenas */
         gap: 8px;
         margin-top: 1rem;
     }
@@ -288,24 +340,18 @@ header p {
         max-width: 280px;
     }
 
-    /* Ajuste específico para #limite-resultados e #btn_pesquisa ficarem lado a lado */
+    #ordem,
     #limite-resultados,
-    #btn_pesquisa {
-        display: inline-block; /* Garante que fiquem na mesma linha */
-        width: auto; /* Remove largura máxima para ajuste natural */
-    }
-
-    #limite-resultados {
+    #media-type {
         padding: 8px 12px;
-        font-size: 0.9rem; /* Consistente com outros elementos */
+        font-size: 0.9rem;
         max-width: 90px;
-        margin-right: 8px; /* Espaço entre o dropdown e o botão */
+        margin-right: 8px;
     }
 
     #btn_pesquisa.btn {
         padding: 8px 20px;
         font-size: 0.9rem;
-        max-width: 120px;
     }
 
     #resultado {
@@ -333,16 +379,16 @@ header p {
         max-width: none;
     }
 
-    #limite-resultados {
+    #ordem,
+    #limite-resultados,
+    #media-type {
         width: auto;
-        flex: 0 0 100px;
+        flex: 0 0 120px;
         max-width: none;
     }
 
-    .btn {
+    #btn_pesquisa.btn {
         width: auto;
-        flex: 0 0 auto;
-        max-width: none;
     }
 }
 
@@ -360,40 +406,5 @@ header p {
 #titulo::placeholder,
 #ano::placeholder {
     font-size: 0.6rem;
-    color: var(--imdb-white);
-}
-
-/* Container das categorias */
-.categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    justify-content: center;
-}
-
-/* Estilo dos cards */
-.category-card {
-    background-color: var(--imdb-dark-gray);
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    font-size: 1rem;
-    width: 160px;
-    text-transform: capitalize;
-    color: var(--imdb-white);
-}
-
-.category-card:hover {
-    background-color: var(--imdb-yellow);
     color: var(--imdb-black);
-    transform: scale(1.05);
-}
-
-.category-card.selected {
-    background-color: var(--imdb-dark-yellow);
-    color: var(--imdb-black);
-    transform: scale(1.0);
 }

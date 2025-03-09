@@ -22,25 +22,57 @@
     <!-- Barra de Pesquisa -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-8 col-lg-6">
-            <div class="d-flex flex-column flex-md-row gap-2">
+            <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
                 <input type="text" id="titulo" class="form-control" placeholder="Procurar por Título...">
                 <input type="text" id="ano" class="form-control" placeholder="Procurar por Ano...">
                 <select id="limite-resultados" class="form-select" style="max-width: 100px;">
                     <option value="20" selected>20 resultados</option>
-                    <option value="40">40 resultados</option>
-                    <option value="60">60 resultados</option>
-                    <option value="80">80 resultados</option>
-                    <option value="100">100 resultados</option>
+                    <option value="1000">1000 resultados</option>
+                    <option value="2000">2000 resultados</option>
+                    <option value="4000">4000 resultados</option>
+                    <option value="6000">6000 resultados</option>
                 </select>
+                <select id="media-type" class="form-select" style="max-width: 120px;">
+                    <option value="movie" selected>Filmes</option>
+                    <option value="tv">Séries</option>
+                </select>
+                <select id="ordem" class="form-select" style="max-width: 120px;">
+                    <option value="Recente" selected>Recentes</option>
+                    <option value="Todos">Todos</option>
+                </select>
+            </div>
+            <!-- Botão em um contêiner separado -->
+            <div class="text-center mt-3">
                 <button id="btn_pesquisa" class="btn btn-success">Procurar</button>
             </div>
         </div>
     </div>
+    <!-- Restante do HTML permanece igual -->
+
 
     <!-- Categorias -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-10 col-lg-8">
             <div class="categories">
+<!-- Categorias de Séries -->
+<div class="category-card_serie" data-id="10759"><span>Ação e Aventura</span></div>
+<div class="category-card_serie" data-id="16"><span>Animação</span></div>
+<div class="category-card_serie" data-id="35"><span>Comédia</span></div>
+<div class="category-card_serie" data-id="80"><span>Crime</span></div>
+<div class="category-card_serie" data-id="99"><span>Documentário</span></div>
+<div class="category-card_serie" data-id="18"><span>Drama</span></div>
+<div class="category-card_serie" data-id="10751"><span>Família</span></div>
+<div class="category-card_serie" data-id="10762"><span>Infantil</span></div>
+<div class="category-card_serie" data-id="9648"><span>Mistério</span></div>
+<div class="category-card_serie" data-id="10763"><span>Notícias</span></div>
+<div class="category-card_serie" data-id="10764"><span>Reality</span></div>
+<div class="category-card_serie" data-id="10765"><span>SciFy e Fantasia</span></div>
+<div class="category-card_serie" data-id="10766"><span>Novela</span></div>
+<div class="category-card_serie" data-id="10767"><span>Talk Show</span></div>
+<div class="category-card_serie" data-id="10768"><span>Guerra e Política</span></div>
+<div class="category-card_serie" data-id="37"><span>Faroeste</span></div>
+            
+                <!-- Categorias de Filmes -->
                 <div class="category-card" data-id="28"><span>Ação</span></div>
                 <div class="category-card" data-id="12"><span>Aventura</span></div>
                 <div class="category-card" data-id="16"><span>Animação</span></div>
