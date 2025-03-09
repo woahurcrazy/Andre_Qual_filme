@@ -102,6 +102,7 @@ header p {
     transition: all 0.3s ease;
     width: 100%;
     max-width: 120px;
+    text-align: center
 }
 
 #ordem:hover,
@@ -331,13 +332,14 @@ header p {
 
     .d-flex input#titulo {
         margin-top: 1rem;
+        text-align: center;
     }
 
     .d-flex input#titulo,
     .d-flex input#ano {
         padding: 8px 15px;
         font-size: 0.9rem;
-        max-width: 280px;
+        max-width: 220px;;
     }
 
     #ordem,
@@ -371,10 +373,11 @@ header p {
         align-items: center;
         gap: 15px;
         margin-top: 2rem;
+        text-align: center;
     }
 
     .d-flex input {
-        width: auto;
+        width: 220px;
         flex: 1;
         max-width: none;
     }
@@ -408,3 +411,51 @@ header p {
     font-size: 1rem;
     color: var(--imdb-black);
 }
+
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed; /* Fixo na tela */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escurecido */
+    z-index: 10000; /* Aumentado para ficar acima de tudo */
+}
+
+.modal[style*="display: block"] .modal-content {
+    background: var(--imdb-dark-gray);
+    color: var(--imdb-white);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid rgba(245, 197, 24, 0.3);
+    border-radius: 8px;
+    width: 50%;
+    position: relative;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    text-align: center;
+    transition: all 0.3s ease;
+    z-index: 10001; /* Acima do fundo do modal */
+}
+
+.modal[style*="display: block"] .modal-content:hover {
+    border-color: rgba(245, 197, 24, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal[style*="display: block"] .close {
+    color: var(--imdb-white);
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    z-index: 10002; /* Acima do conteúdo do modal */
+}
+
+.modal[style*="display: block"] .close:hover {
+    color: var(--imdb-yellow);
+}
+

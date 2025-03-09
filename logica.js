@@ -1,12 +1,79 @@
 const btnPesquisa = document.getElementById('btn_pesquisa');
 let selectedCategories = []; // Variável global
 
+// Funções para abrir e fechar o modal
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+    } else {
+        console.error(`Modal com ID ${modalId} não encontrado`);
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    } else {
+        console.error(`Modal com ID ${modalId} não encontrado`);
+    }
+}
+
 // Função para disparar a ação do botão "Procurar"
 function acionarPesquisa() {
     btnPesquisa.click();
 }
 
-// Tudo dentro de DOMContentLoaded para garantir que o DOM esteja carregado
+// Função para exibir filmes ou séries (movida para o escopo global)
+function exibirFilmes(itens) {
+    let output = '';
+    // Limpar modais existentes para evitar duplicatas
+    document.querySelectorAll('.modal').forEach(modal => modal.remove());
+
+    itens.forEach(item => {
+        const isMovie = item.title !== undefined;
+        const title = isMovie ? item.title : item.name;
+        const releaseDate = isMovie ? item.release_date : item.first_air_date;
+        const ano = releaseDate ? new Date(releaseDate).getFullYear() : 'N/D';
+        output += `
+            <div class="movie-item">
+                <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${title}">
+                <h3>${title}</h3>
+                <p>${item.overview.length > 150 ? item.overview.substring(0, 200) + '...' : item.overview}</p>
+                <div class="movie-footer">
+                    <a href="https://www.themoviedb.org/${isMovie ? 'movie' : 'tv'}/${item.id}" target="_blank" class="btn">+ Info</a>
+                    <button class="btn" onclick="openModal('modal-${item.id}')">Links</button>
+                    <span>Ano<br>${ano}</span>
+                </div>
+            </div>
+        `;
+
+        // Criar o modal e adicioná-lo ao body usando item.id
+        const modal = document.createElement('div');
+        modal.id = `modal-${item.id}`; // ID único baseado no TMDb item.id
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('modal-${item.id}')">×</span>
+                <h2 style="margin: 10px auto;">${title}</h2>
+                <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${title}" width="120" style="margin: 10px auto;">
+                <div class="d-flex justify-content-center">
+                    <img src="https://www.shutterstock.com/image-photo/dog-under-construction-600nw-107265347.jpg" alt="Custom Image" style="max-width: 60%;">
+                </div>
+                <div class="d-flex justify-content-center">
+                    Em construção volta mais tarde..<br>
+                    <a href="https://www.themoviedb.org/${isMovie ? 'movie' : 'tv'}/${item.id}" target="_blank" class="btn btn-info btn-lg">Links...</a>
+                </div>
+                <br><br>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    });
+    document.getElementById('resultado').innerHTML = output;
+}
+
+// Tudo dentro de DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
     // Evento de tecla "Enter"
     document.addEventListener('keydown', function(event) {
@@ -83,161 +150,134 @@ document.addEventListener('DOMContentLoaded', function() {
             searchFunction({ query, ano, popular: !QueryBool && !AnoBool });
         }
     });
-
-    // Função para exibir filmes ou séries
-    function exibirFilmes(itens) {
-        let output = '';
-        itens.forEach(item => {
-            const isMovie = item.title !== undefined;
-            const title = isMovie ? item.title : item.name;
-            const releaseDate = isMovie ? item.release_date : item.first_air_date;
-            const ano = releaseDate ? new Date(releaseDate).getFullYear() : 'N/D';
-            output += `
-                <div class="movie-item">
-                    <img src="https://image.tmdb.org/t/p/w500${item.poster_path}" alt="${title}">
-                    <h3>${title}</h3>
-                    <p>${item.overview.length > 150 ? item.overview.substring(0, 100) + '...' : item.overview}</p>
-                    <div class="movie-footer">
-                        <a href="https://www.themoviedb.org/${isMovie ? 'movie' : 'tv'}/${item.id}" target="_blank" class="btn">+ Info</a>
-                        <span>${ano}</span>
-                    </div>
-                </div>
-            `;
-        });
-        document.getElementById('resultado').innerHTML = output;
-    }
-
-    // Função para buscar filmes
-    async function buscarFilmes({ query = '', ano = null, popular = false } = {}) {
-        const apiKey = '9e3dae2c0d235c9fd406df6abcfb81dd';
-        let baseUrl = popular 
-            ? `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US`
-            : ano && !query 
-                ? `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_year=${ano}&language=en-US`
-                : `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}&language=en-US`;
-
-        if (selectedCategories.length > 0) {
-            baseUrl += `&with_genres=${selectedCategories.join(',')}`;
-        }
-        
-        document.getElementById('resultado').innerHTML = 'A procurar...';
-        let allResults = [];
-        const seenIds = new Set();
-        let page = 1;
-        const limiteResultados = document.getElementById('limite-resultados').value;
-        const maxPages = Math.ceil(limiteResultados / 20);
-
-        try {
-            while (true) {
-                const url = `${baseUrl}&page=${page}`;
-                console.log("URL Filmes:", url);
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.results.length === 0 || page > maxPages || page > data.total_pages) break;
-                document.getElementById('resultado').innerHTML = 'A procurar página...'+ page +" de " + maxPages;
-
-                const filmesFiltrados = data.results.filter(movie => {
-                    if (seenIds.has(movie.id)) return false;
-                    seenIds.add(movie.id);
-                    if (ano && (!movie.release_date || !movie.release_date.startsWith(ano))) return false;
-                    if (selectedCategories.length === 0) return true;
-                    return selectedCategories.every(cat => movie.genre_ids?.includes(Number(cat)) ?? false);
-                });
-
-                allResults = allResults.concat(filmesFiltrados);
-                page++;
-
-                if (allResults.length >= limiteResultados) break;
-            }
-
-            if (allResults.length > 0) {
-                // Só ordenar por vote_average e vote_count se NÃO for busca por popularidade
-                //GUARDAR ESTE COMENTARIO SERVE PARA MUDAR A LOGICA DO PROCURAR GERAL
-                let ordem = document.getElementById('ordem').value;
-                if (ordem === 'Todos') {
-                    allResults.sort((a, b) => b.vote_average - a.vote_average);
-                    allResults.sort((a, b) => b.vote_count - a.vote_count);
-                }
-                console.log("Filmes filtrados (total, sem duplicados):", allResults);
-                exibirFilmes(allResults);
-            } else {
-                document.getElementById('resultado').innerHTML = 
-                    ano ? 'Nenhum filme encontrado com os gêneros e ano selecionados.' 
-                        : 'Nenhum filme encontrado com os gêneros selecionados.';
-            }
-        } catch (error) {
-            console.error('Erro ao buscar filmes:', error);
-            document.getElementById('resultado').innerHTML = 'Erro ao buscar filmes.';
-        }
-    }
-
-    // Função para buscar séries
-    async function buscarSeries({ query = '', ano = null, popular = false } = {}) {
-        const apiKey = '9e3dae2c0d235c9fd406df6abcfb81dd';
-        let baseUrl = popular 
-            ? `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=en-US`
-            : ano && !query 
-                ? `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&first_air_date_year=${ano}&language=en-UST`
-                : `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${query}&language=en-US`;
-
-        if (selectedCategories.length > 0) {
-            baseUrl += `&with_genres=${selectedCategories.join(',')}`;
-        }
-        
-        document.getElementById('resultado').innerHTML = 'A procurar...';
-        let allResults = [];
-        const seenIds = new Set();
-        let page = 1;
-        const limiteResultados = document.getElementById('limite-resultados').value;
-        const maxPages = Math.ceil(limiteResultados / 20);
-
-        try {
-            while (true) {
-                const url = `${baseUrl}&page=${page}`;
-                console.log("URL Séries:", url);
-                const response = await fetch(url);
-                const data = await response.json();
-
-                console.log("Resultados brutos da API (página " + page + "):", data.results);
-                document.getElementById('resultado').innerHTML = 'A procurar página...'+ page +" de " + maxPages;
-
-                if (data.results.length === 0 || page > maxPages || page > data.total_pages) break;
-
-                const seriesFiltradas = data.results.filter(serie => {
-                    if (seenIds.has(serie.id)) return false;
-                    seenIds.add(serie.id);
-                    if (ano && (!serie.first_air_date || !serie.first_air_date.startsWith(ano))) return false;
-                    if (selectedCategories.length === 0) return true;
-                    const genreMatch = selectedCategories.every(cat => serie.genre_ids?.includes(Number(cat)) ?? false);
-                    console.log("Série:", serie.name, "Gêneros:", serie.genre_ids, "Match:", genreMatch);
-                    return genreMatch;
-                });
-
-                allResults = allResults.concat(seriesFiltradas);
-                page++;
-
-                if (allResults.length >= limiteResultados) break;
-            }
-
-            if (allResults.length > 0) {
-                // Só ordenar por vote_average e vote_count se NÃO for busca por popularidade
-                let ordem = document.getElementById('ordem').value;
-                if (ordem === 'Todos') {
-                    allResults.sort((a, b) => b.vote_average - a.vote_average);
-                    allResults.sort((a, b) => b.vote_count - a.vote_count);
-                
-                }
-                console.log("Séries filtradas (total, sem duplicados):", allResults);
-                exibirFilmes(allResults);
-            } else {
-                document.getElementById('resultado').innerHTML = 
-                    ano ? 'Nenhuma série encontrada com os gêneros e ano selecionados.' 
-                        : 'Nenhuma série encontrada com os gêneros selecionados.';
-            }
-        } catch (error) {
-            console.error('Erro ao buscar séries:', error);
-            document.getElementById('resultado').innerHTML = 'Erro ao buscar séries.';
-        }
-    }
 });
+
+// Função para buscar filmes
+async function buscarFilmes({ query = '', ano = null, popular = false } = {}) {
+    const apiKey = '9e3dae2c0d235c9fd406df6abcfb81dd';
+    let baseUrl = popular 
+        ? `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US`
+        : ano && !query 
+            ? `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_year=${ano}&language=en-US`
+            : `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}&language=en-US`;
+
+    if (selectedCategories.length > 0) {
+        baseUrl += `&with_genres=${selectedCategories.join(',')}`;
+    }
+    
+    document.getElementById('resultado').innerHTML = 'A procurar...';
+    let allResults = [];
+    const seenIds = new Set();
+    let page = 1;
+    const limiteResultados = document.getElementById('limite-resultados').value;
+    const maxPages = Math.ceil(limiteResultados / 20);
+
+    try {
+        while (true) {
+            const url = `${baseUrl}&page=${page}`;
+            console.log("URL Filmes:", url);
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.results.length === 0 || page > maxPages || page > data.total_pages) break;
+            document.getElementById('resultado').innerHTML = 'A procurar página...' + page + " de " + maxPages;
+
+            const filmesFiltrados = data.results.filter(movie => {
+                if (seenIds.has(movie.id)) return false;
+                seenIds.add(movie.id);
+                if (ano && (!movie.release_date || !movie.release_date.startsWith(ano))) return false;
+                if (selectedCategories.length === 0) return true;
+                return selectedCategories.every(cat => movie.genre_ids?.includes(Number(cat)) ?? false);
+            });
+
+            allResults = allResults.concat(filmesFiltrados);
+            page++;
+
+            if (allResults.length >= limiteResultados) break;
+        }
+
+        if (allResults.length > 0) {
+            let ordem = document.getElementById('ordem').value;
+            if (ordem === 'Todos') {
+                allResults.sort((a, b) => b.vote_average - a.vote_average);
+                allResults.sort((a, b) => b.vote_count - a.vote_count);
+            }
+            console.log("Filmes filtrados (total, sem duplicados):", allResults);
+            exibirFilmes(allResults);
+        } else {
+            document.getElementById('resultado').innerHTML = 
+                ano ? 'Nenhum filme encontrado com os gêneros e ano selecionados.' 
+                    : 'Nenhum filme encontrado com os gêneros selecionados.';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar filmes:', error);
+        document.getElementById('resultado').innerHTML = 'Erro ao buscar filmes.';
+    }
+}
+
+// Função para buscar séries
+async function buscarSeries({ query = '', ano = null, popular = false } = {}) {
+    const apiKey = '9e3dae2c0d235c9fd406df6abcfb81dd';
+    let baseUrl = popular 
+        ? `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&language=en-US`
+        : ano && !query 
+            ? `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&first_air_date_year=${ano}&language=en-US`
+            : `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${query}&language=en-US`;
+
+    if (selectedCategories.length > 0) {
+        baseUrl += `&with_genres=${selectedCategories.join(',')}`;
+    }
+    
+    document.getElementById('resultado').innerHTML = 'A procurar...';
+    let allResults = [];
+    const seenIds = new Set();
+    let page = 1;
+    const limiteResultados = document.getElementById('limite-resultados').value;
+    const maxPages = Math.ceil(limiteResultados / 20);
+
+    try {
+        while (true) {
+            const url = `${baseUrl}&page=${page}`;
+            console.log("URL Séries:", url);
+            const response = await fetch(url);
+            const data = await response.json();
+
+            console.log("Resultados brutos da API (página " + page + "):", data.results);
+            document.getElementById('resultado').innerHTML = 'A procurar página...' + page + " de " + maxPages;
+
+            if (data.results.length === 0 || page > maxPages || page > data.total_pages) break;
+
+            const seriesFiltradas = data.results.filter(serie => {
+                if (seenIds.has(serie.id)) return false;
+                seenIds.add(serie.id);
+                if (ano && (!serie.first_air_date || !serie.first_air_date.startsWith(ano))) return false;
+                if (selectedCategories.length === 0) return true;
+                const genreMatch = selectedCategories.every(cat => serie.genre_ids?.includes(Number(cat)) ?? false);
+                console.log("Série:", serie.name, "Gêneros:", serie.genre_ids, "Match:", genreMatch);
+                return genreMatch;
+            });
+
+            allResults = allResults.concat(seriesFiltradas);
+            page++;
+
+            if (allResults.length >= limiteResultados) break;
+        }
+
+        if (allResults.length > 0) {
+            let ordem = document.getElementById('ordem').value;
+            if (ordem === 'Todos') {
+                allResults.sort((a, b) => b.vote_average - a.vote_average);
+                allResults.sort((a, b) => b.vote_count - a.vote_count);
+            }
+            console.log("Séries filtradas (total, sem duplicados):", allResults);
+            exibirFilmes(allResults);
+        } else {
+            document.getElementById('resultado').innerHTML = 
+                ano ? 'Nenhuma série encontrada com os gêneros e ano selecionados.' 
+                    : 'Nenhuma série encontrada com os gêneros selecionados.';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar séries:', error);
+        document.getElementById('resultado').innerHTML = 'Erro ao buscar séries.';
+    }
+}
