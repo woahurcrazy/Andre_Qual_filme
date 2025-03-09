@@ -405,6 +405,6 @@ header p {
 /* Placeholder Styles */
 #titulo::placeholder,
 #ano::placeholder {
-    font-size: 0.6rem;
+    font-size: 1rem;
     color: var(--imdb-black);
 }
